@@ -161,8 +161,12 @@ Cross compiler has 5 phases:
 - Code Generation.
 
 
-## **2. Makefile**
-### **2.1. Rule**
+## **3. Makefile**
+### **3.1. Rule**
 ![01_makefile_rule](./images/01_makefile_rule.png)
-### **2.2. Variables**
+### **3.2. Variables**
+
+
+
+
 `var := 1`
