@@ -163,9 +163,23 @@ Cross compiler has 5 phases:
 
 ## **3. Makefile**
 ### **3.1. Rule**
+
+A Makefile is a file name Makefile or makefile, that include a set of rules. A rule's structure looks like:
+
 ![01_makefile_rule](./images/01_makefile_rule.png)
+
+with:
+- The targets are file names, separated by spaces. Typically, there is only one per rule.
+- The actions are a series of steps typically used to make the target(s). These need to start with a tab character, not spaces.
+- The dependencies are also file names, separated by spaces. These files need to exist before the commands for the target are run. If the dependencies file do not exist, the rules that has same target's name will run.
+
+To run a rule, type in terminal the following command:
+
+    make target_name
+
 ### **3.2. Variables**
 
+A variable is a name defined in a makefile to represent a string of text, called the variable's value.
 
 
 
