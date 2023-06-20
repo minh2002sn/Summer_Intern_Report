@@ -1,4 +1,31 @@
-# **Report Basic C**
+# **Report Basic C Programming**
+
+## **Table of contents**
+- [**Report Basic C Programming**](#report-basic-c-programming)
+  - [**Table of contents**](#table-of-contents)
+  - [**1. Compiling process and Cross-compiler**](#1-compiling-process-and-cross-compiler)
+    - [**1.1. Compiling process**](#11-compiling-process)
+      - [***1.1.1. Pre-processing step***](#111-pre-processing-step)
+      - [***1.1.2. Compiling step***](#112-compiling-step)
+      - [***1.1.3. Assembling step***](#113-assembling-step)
+      - [***1.1.4. Linking step***](#114-linking-step)
+    - [**1.2 Cross compiler**](#12-cross-compiler)
+  - [**2. C libraries**](#2-c-libraries)
+    - [**2.1. Static libraries**](#21-static-libraries)
+    - [**2.2. Dynamic libraries**](#22-dynamic-libraries)
+  - [**3. Makefile**](#3-makefile)
+    - [**3.1. Rule**](#31-rule)
+    - [**3.2. Variables**](#32-variables)
+      - [**3.2.1. Definition**](#321-definition)
+      - [**3.2.2. Flavors of variables**](#322-flavors-of-variables)
+      - [**3.2.3. Some useful automatic variables**](#323-some-useful-automatic-variables)
+    - [**3.3. Some useful functions**](#33-some-useful-functions)
+  - [**4. Git**](#4-git)
+    - [**4.1. Definition**](#41-definition)
+    - [**4.2. Basic Git Commands**](#42-basic-git-commands)
+    - [**4.3. Git workflow**](#43-git-workflow)
+
+
 ## **1. Compiling process and Cross-compiler**
 ### **1.1. Compiling process**
 The compilation process in C involves 4 steps: pre-processing, compiling, assembling and linking.
@@ -350,60 +377,59 @@ There are 2 flavors of variables:
 
 ### **3.3. Some useful functions**
 
-#### **3.3.1. "wildcard" function**
-**Syntax:**
-```make
-$(wildcard pattern...)
-```
+- **"wildcard" function**
+    - **Syntax:**
+        ```make
+        $(wildcard pattern...)
+        ```
+    - **Function:** To get all object in folder.
 
-**Function:** To get all object in folder.
+    - **Example 3.6: Get all .c files in folder**
+        ```make
+        SRC = $(wildcard src/*/c)
+        ```
 
-**Example 3.6: Get all .c files in folder**
->```make
->SRC = $(wildcard src/*/c)
->```
+- **"subst" function**
+    - **Syntax:**
+        ```make
+        $(subst from, to, text)
+        ```
 
-#### **3.3.2. "subst" function**
-**Syntax:**
-```make
-$(subst from, to, text)
-```
+    - **Function:** To replace a substring with another substring.
 
-**Function:** To replace a substring with another substring.
+    - **Example 3.7: Change '.c' into '.o'**
+        ```make
+        SRC = main.c
+        OBJ = $(subst '.c', '.o', $(SRC))
+        ```
 
-**Example 3.7: Change '.c' into '.o'**
->```make
->SRC = main.c
->OBJ = $(subst '.c', '.o', $(SRC))
->```
+- **"patsubst" function**
+    - **Syntax:**
+        ```make
+        $(patsubst pattern, replacement, text)
+        ```
 
-#### **3.3.3. "patsubst" function**
-**Syntax:**
-```make
-$(patsubst pattern, replacement, text)
-```
+    - **Function:** Finds whitespace-separated words in text that match pattern and replaces them with replacement. Here pattern may contain a ‘%’ which acts as a wildcard, matching any number of any characters within a word. If replacement also contains a ‘%’, the ‘%’ is replaced by the text that matched the ‘%’ in pattern. Only the first ‘%’ in the pattern and replacement is treated this way; any subsequent ‘%’ is unchanged.
 
-**Function:** Finds whitespace-separated words in text that match pattern and replaces them with replacement. Here pattern may contain a ‘%’ which acts as a wildcard, matching any number of any characters within a word. If replacement also contains a ‘%’, the ‘%’ is replaced by the text that matched the ‘%’ in pattern. Only the first ‘%’ in the pattern and replacement is treated this way; any subsequent ‘%’ is unchanged.
+    - **Example 3.8: Change src/XXX.c to obj/XXX.o**
+        ```make
+        SRC = src/main.c src/func_1.c src/func_2.c
+        OBJ = $(patsubst src/%.c, obj/%.o, $(SRC))
+        ```
 
-**Example 3.8: Change src/XXX.c to obj/XXX.o**
->```make
->SRC = src/main.c src/func_1.c src/func_2.c
->OBJ = $(patsubst src/%.c, obj/%.o, $(SRC))
->```
+- **"foreach" function**
+    - **Syntax:**
+        ```make
+        $(foreach var, list, text)
+        ```
 
-#### **3.3.4. "foreach" function**
-**Syntax:**
-```make
-$(foreach var, list, text)
-```
+    - **Function:** To converts one list of words (separated by spaces) to another. *var* is set to each word in *list*, and *text* is expanded for each word.
 
-**Function:** To converts one list of words (separated by spaces) to another. *var* is set to each word in *list*, and *text* is expanded for each word.
-
-**Example 3.9: Change "who are you" into "who! are! you!"**
->```make
->foo := who are you
->bar := $(foreach wrd,$(foo),$(wrd)!)
->```
+    - **Example 3.9: Change "who are you" into "who! are! you!"**
+        ```make
+        foo := who are you
+        bar := $(foreach wrd,$(foo),$(wrd)!)
+        ```
 
 ## **4. Git**
 ### **4.1. Definition**
