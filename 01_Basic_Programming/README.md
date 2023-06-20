@@ -405,3 +405,166 @@ $(foreach var, list, text)
 >bar := $(foreach wrd,$(foo),$(wrd)!)
 >```
 
+## **4. Git**
+### **4.1. Definition**
+Git is a free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency.
+
+Git has 2 main areas, there are local area and remote area. Local area is a device that you working with your project. Remote area is a server that store your project data.
+
+Local area consist of 3 sections: the working directory, the staging area, repository.
+
+![02_Git_area](./images/02_git_areas.svg)
+
+- **Working area**
+    
+    The working tree is a single checkout of one version of the project. These files are pulled out of the compressed database in the repository and placed on disk for you to use or modify.
+
+- **Staging area**
+
+    The staging area (the cache area or index) contains the working tree directory, including the repository, commits, and branches that would be committed.
+
+- **Local repository**
+
+    Local repository is where Git stores the metadata and object database for your project. This is the most important part of Git, and it is what is copied when you clone a repository from another computer.
+
+- **Remote repository**
+
+    Remote repository is a copy of local repository that is stored in server and can share with other people.
+
+### **4.2. Basic Git Commands**
+
+- **git init**
+    - **Syntax:**
+        
+        ```make
+        git init
+        ```
+    - **Function:** Initialization if git project.
+
+- **git add**
+    - **Syntax:**
+        ```make
+        # Add 1 file
+        git add <file_name>
+        # Add any thing
+        git add .
+        ```
+    - **Function:** Add file(s) with changed content from *working direction* to *staging area*
+
+- **git commit**
+    - **Syntax:**
+        
+        ```make
+        git commit -m "<commit_message>"
+        ```
+    - **Function:** Create a new commit containing the current contents of the staging area and the given log message describing the changes which is <commit_massage> given in command.
+
+- git push
+    - **Syntax:**
+
+        ```make
+        # Push a branch to remote repository
+        git push <remote_name> <branch_name>
+        # Push all branches to remote repository
+        git push <remote_name> --all
+        ```
+    - **Function:** Push branch(es) in local repository to remote repository. 
+
+- git pull
+    - **Syntax:**
+        
+        ```make
+        git pull
+        ```
+    - **Function:** Update local repository with remote repository.
+
+- git branch
+    - **Syntax:**
+        ```make
+        # Show all current branches
+        # Can use -r flag to show all remote branches
+        git branch
+        # Create a branch
+        git branch <branch_name>
+        # Delete branch
+        git branch -D <branch_name>
+        ```
+
+- git checkout
+    - **Syntax:**
+        
+        ```make
+        # Checkout <branch_name> branch
+        git checkout <branch_name>
+        # Create and checkout <branch_name> branch if it is not exist
+        git checkout -b <branch_name>
+        ```
+    - **Function:** Initialization if git project.
+
+- git merge
+    - **Syntax:**
+        
+        ```make
+        git merge <branch_name>
+        ```
+    - **Function:** Merge <branche_name> branch into current branch.
+
+- git log
+    - **Syntax:**
+        
+        ```make
+        git log
+        ```
+    - **Function:** Show all commits, can use `--oneline` flag to show in short type.
+
+- git status
+    - **Syntax:**
+        
+        ```make
+        git status
+        ```
+    - **Function:** Show which files are different from the last commit.
+
+- git stash
+    - **Syntax:**
+        
+        ```make
+        # To save the change to the stack when we need to checkout another branch.
+        git stash
+        # To show the saved time list.
+        # Can use -p flag to show content.
+        git stash list
+        # To restore.
+        # x is a index of save time.
+        git stash apply stash@{x}
+        # To clean the stack.
+        git stash drop stash@{x}
+        #or
+        git stash clear
+        ```
+### **4.3. Git workflow**
+A Git workflow is a recipe or recommendation for how to use Git to accomplish work in a consistent and productive manner.
+
+![03_git_workflow](./images/03_git_workflow.webp)
+
+A git workflow usually consists of 5 kind of branches:
+
+1. Master: Contain release versions for users, each release versions should have a tag.
+
+![04_master_branch](./images/04_master_branch.webp)
+
+2. Hotfix: Can be used for hot fixing release versions's errors on the master branch.
+
+![05_hotfix_branch](./images/05_hotfix_branch.webp)
+
+3. Release: To store the versions that are checked errors the last time before release.
+
+![06_release_branch](./images/06_release_branch.png)
+
+4. Develop: When developers finish developing a feature of project in release branch, it will be merged into develop branch.
+
+![07_develop_branch](./images/07_develop_branch.webp)
+
+5. Feature: There can be a lot of feature branches in the same time, each feature branch is used to develop a feature of project.
+
+![08_feature_branches](./images/08_feature_branches.webp)
