@@ -11,6 +11,9 @@
       - [***1.1.4. Linking step***](#114-linking-step)
     - [**1.2 Cross compiler**](#12-cross-compiler)
   - [**2. C libraries**](#2-c-libraries)
+    - [**2.1. Static linking**](#21-static-linking)
+    - [**2.2. Object files**](#22-object-files)
+    - [**2.3. Relocatable object files**](#23-relocatable-object-files)
     - [**2.1. Static libraries**](#21-static-libraries)
     - [**2.2. Dynamic libraries**](#22-dynamic-libraries)
   - [**3. Makefile**](#3-makefile)
@@ -197,9 +200,34 @@ Cross compiler has 5 phases:
 - Code Generation.
 
 ## **2. C libraries**
+
+### **2.1. Static linking**
+
+Static linkers such as the Unix ld program take as input a collection of relocatable object files and command-line arguments and generate as output a fully linked executable object file that can be loaded and run.
+
+To build the executable, the linker must perform two main tasks:
+
+- Symbol resolution: Object files define and reference symbols. The purpose of symbol resolution is to associate each symbol reference with exactly one symbol definition.
+- Relocation: Compilers and assemblers generate code and data sections that start at address 0. The linker relocates these sections by associating a memory location with each symbol definition, and then modifying all of the references to those symbols so that they point to this memory location.
+
+### **2.2. Object files**
+
+Object files come in three forms:
+- Relocatable object file: Contains binary code and data in a form that can be combined with other relocatable object files at compile time to create an executable object file.
+- Executable object file: Contains binary code and data in a form that can be copied directly into memory and executed.
+- Shared object file: A special type of relocatable object file that can be loaded into memory and linked dynamically, at either load time or run time.
+
+### **2.3. Relocatable object files**
+
+An object file includes 11 sections and *section header table* 
+
+![11_relocatable_object_file.png](./images/11_relocatable_object_file.png)
+
+
+
 ### **2.1. Static libraries**
 
-A static library is  a set of object files that were copied into a single file. It can be linked with other object files in linking process to generate executable file.
+A static library is  a set of object files that were copied into a single file. It can be linked with other object files i  n linking process to generate executable file.
 
 The static library files must be named with prefix 'lib' and suffix '.a'.
 
@@ -460,114 +488,191 @@ Local area consist of 3 sections: the working directory, the staging area, repos
 ### **4.2. Basic Git Commands**
 
 - **git init**
+    - **Function:** Initialization a git project.
     - **Syntax:**
         
         ```make
         git init
         ```
-    - **Function:** Initialization if git project.
 
 - **git add**
+    - **Function:** Add file(s) with changed content from *working direction* to *staging area*
     - **Syntax:**
-        ```make
-        # Add 1 file
+
+        Add 1 file
+        ```
         git add <file_name>
-        # Add any thing
+        ```
+        Add any thing
+        ```
         git add .
         ```
-    - **Function:** Add file(s) with changed content from *working direction* to *staging area*
 
 - **git commit**
+    - **Function:** Create a new commit containing the current contents of the staging area and the given log message describing the changes which is *<commit_massage>* given in command.
     - **Syntax:**
         
         ```make
         git commit -m "<commit_message>"
         ```
-    - **Function:** Create a new commit containing the current contents of the staging area and the given log message describing the changes which is <commit_massage> given in command.
 
-- git push
+- **git reset**
+    - **Function:** Reset the project to the old commit.
     - **Syntax:**
 
-        ```make
-        # Push a branch to remote repository
+        Uncommit x last commits but not delete contents.
+
+        ```
+        git reset --soft HEAD~x
+        ```
+        Remove x last commits, including contents.
+        ```
+        git reset --hard HEAD~x
+        ```
+        Remove all changes and return the last commit.
+        ```
+        git reset --hard HEAD
+        # or
+        git reset --hard
+        ```
+
+- **git push**
+    - **Function:** Push branch(es) in local repository to remote repository. 
+    - **Syntax:**
+
+        Push a branch to remote repository
+        ```
         git push <remote_name> <branch_name>
-        # Push all branches to remote repository
+        ```
+        Push all branches to remote repository
+        ```
         git push <remote_name> --all
         ```
-    - **Function:** Push branch(es) in local repository to remote repository. 
 
-- git pull
+- **git pull**
+    - **Function:** Update local repository with remote repository.
     - **Syntax:**
         
         ```make
         git pull
+        # or
+        git pull <remote> <branch>
         ```
-    - **Function:** Update local repository with remote repository.
 
-- git branch
+- **git branch**
+    - **Function:** To show, create, delete branch(es)
     - **Syntax:**
+        
+        Show all current branches. Can use -r flag to show all remote branches.
         ```make
-        # Show all current branches
-        # Can use -r flag to show all remote branches
         git branch
-        # Create a branch
+        ```
+        Create a branch
+        ```
         git branch <branch_name>
-        # Delete branch
+        ```
+        Delete branch
+        ```
         git branch -D <branch_name>
         ```
 
-- git checkout
+- **git checkout**
+    - **Function:** Change into another branch.
     - **Syntax:**
         
-        ```make
-        # Checkout <branch_name> branch
+        Checkout *<branch_name>* branch
+        ```
         git checkout <branch_name>
-        # Create and checkout <branch_name> branch if it is not exist
+        ```
+        Create and checkout *<branch_name>* branch if it is not exist
+        ```
         git checkout -b <branch_name>
         ```
-    - **Function:** Initialization if git project.
+    - To checkout from the early commit into a new branch, use below command:
+        ```make
+        git checkout <commit_hash> -b <branch_name>
+        ```
+        *<commit_hash>* is the the highlight code in the picture below when using `git log` command.
 
-- git merge
+        ![09_commit_hash_1](./images/09_commit_hash_1.png)
+
+        Or *<commit_hash>* can be the highlight code below when using `git log --oneline` command.
+
+        ![10_commit_hash_2](./images/10_commit_hash_2.png)
+
+- **git merge**
+    - **Function:** Merge *<branche_name>* branch into current branch.
     - **Syntax:**
         
         ```make
         git merge <branch_name>
         ```
-    - **Function:** Merge <branche_name> branch into current branch.
 
-- git log
+- **git log**
+    - **Function:** Show all commits, can use `--oneline` flag to show in short type.
     - **Syntax:**
         
         ```make
         git log
         ```
-    - **Function:** Show all commits, can use `--oneline` flag to show in short type.
 
-- git status
+- **git status**
+    - **Function:** Show which files are different from the last commit.
     - **Syntax:**
         
         ```make
         git status
         ```
-    - **Function:** Show which files are different from the last commit.
 
-- git stash
+- **git stash**
+    - **Function:** Save the changed contents or restore contents without using git commit, use when we need to checkout to another branch but do not want to commit in current branch.
     - **Syntax:**
         
+        Save the changed contents to the stack when we need to checkout another branch.
         ```make
-        # To save the change to the stack when we need to checkout another branch.
         git stash
-        # To show the saved time list.
-        # Can use -p flag to show content.
+        ```
+        Show the saved time list. Can use -p flag to show content.
+        ```
         git stash list
-        # To restore.
-        # x is a index of save time.
+        ```
+        Restore a saved version. x is a index of save time.
+        ```
         git stash apply stash@{x}
-        # To clean the stack.
+        ```
+        To clean the stack.
+        ```
         git stash drop stash@{x}
-        #or
+        ```
+        or use this command to clean up stack.
+        ```
         git stash clear
         ```
+
+- **git tag**
+    - **Syntax:**
+
+        Create a tag at current commit with a name <tag_name>
+        ```make
+        git tag <tag_name>
+        ```
+        Show all tags
+        ```
+        git tag
+        ```
+        Delete tag
+        ```
+        git tag -d <tag_name>
+        ```
+        Push a tag to remote
+        ```
+        git push <remote> <tag_name>
+        ```
+        Delete the tag in remote
+        ```
+        git push -d <remote> <tag_name>
+        ```
+
 ### **4.3. Git workflow**
 A Git workflow is a recipe or recommendation for how to use Git to accomplish work in a consistent and productive manner.
 
@@ -591,6 +696,14 @@ A git workflow usually consists of 5 kind of branches:
 
 ![07_develop_branch](./images/07_develop_branch.webp)
 
-5. Feature: There can be a lot of feature branches in the same time, each feature branch is used to develop a feature of project.
+5. Feature: 
+    
+    There can be a lot of feature branches in the same time, each feature branch is used to develop a feature of project.
+
+    Feature branches's name is always followed by a name of feature.
+    
+    Eg: feature/button, feature/lcd, feature/mqtt, ...
+
+    When complete developing a feature, its branch is merged into develop branch.
 
 ![08_feature_branches](./images/08_feature_branches.webp)
