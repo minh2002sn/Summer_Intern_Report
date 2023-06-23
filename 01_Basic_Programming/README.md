@@ -14,14 +14,18 @@
     - [**2.1. Static linking**](#21-static-linking)
     - [**2.2. Object files**](#22-object-files)
     - [**2.3. Relocatable object files**](#23-relocatable-object-files)
-    - [**2.1. Static libraries**](#21-static-libraries)
-    - [**2.2. Dynamic libraries**](#22-dynamic-libraries)
+    - [**2.4. Symbols and symbol table**](#24-symbols-and-symbol-table)
+    - [**2.5. Symbol resolution**](#25-symbol-resolution)
+      - [***2.5.1. Local symbol***](#251-local-symbol)
+      - [***2.5.2. Global symbol***](#252-global-symbol)
+    - [**2.6. Static libraries**](#26-static-libraries)
+    - [**2.7. Dynamic libraries**](#27-dynamic-libraries)
   - [**3. Makefile**](#3-makefile)
     - [**3.1. Rule**](#31-rule)
     - [**3.2. Variables**](#32-variables)
-      - [**3.2.1. Definition**](#321-definition)
-      - [**3.2.2. Flavors of variables**](#322-flavors-of-variables)
-      - [**3.2.3. Some useful automatic variables**](#323-some-useful-automatic-variables)
+      - [***3.2.1. Definition***](#321-definition)
+      - [***3.2.2. Flavors of variables***](#322-flavors-of-variables)
+      - [***3.2.3. Some useful automatic variables***](#323-some-useful-automatic-variables)
     - [**3.3. Some useful functions**](#33-some-useful-functions)
   - [**4. Git**](#4-git)
     - [**4.1. Definition**](#41-definition)
@@ -52,7 +56,7 @@ The pre-processing output is .i files.
 >
 >void func_1();
 >void func_2();
->
+> 
 >#endif
 >```
 >
@@ -62,8 +66,8 @@ The pre-processing output is .i files.
 >#include "main.h"
 >
 >/* Macro */
->#define PI          3.14
->#define SQUARE(a)   a*a
+>#define PI          (3.14)
+>#define SQUARE(a)   (a)*(a)
 >
 >/* main function */
 >int main()
@@ -101,7 +105,7 @@ The pre-processing output is .i files.
 >
 >int main()
 >{
->    float f = 2*2*3.14;
+>    float f = (2)*(2)*(3.14);
 >}
 >```
 
@@ -175,12 +179,96 @@ Number of .o files generated is number of .c files.
 >```
 >gcc -c main.c -o main.o
 >```
->Content of main.o file:
+>Content of main.o file is in machine level, to understand that, using `readelf -a main.o` command:
 >```
->ELF\00\00\00\00\00\00\00\00\00\00>\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00@\00\00\00\00\00@\00\00
->\00��UH���\00\00\00\00�E��\00\00\00\00]���HA\00GCC: (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0\00\00\00\00\00\00\00\00\00\00\00\00GNU\00\00\00�\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00zR\00x�\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00E�C
->S\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00��\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00main.c\00main\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00�������� \00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00.symtab\00.strtab\00.shstrtab\00.rela.text\00.data\00.bss\00.rodata\00.comment\00.note.GNU-stack\00.note.gnu.property\00.rela.eh_frame\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00 \00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00@\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00@\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00p\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00&\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00,\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\001\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\009\00\00\00\00\00\000\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00`\00\00\00\00\00\00\00.\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00B\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00�\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00R\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00�\00\00\00\00\00\00\00 \00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00j\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00�\00\00\00\00\00\00\008\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00e\00\00\00\00\00\00@\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00�\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00	\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00�\00\00\00\00\00\00\00x\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00	\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00`\00\00\00\00\00\00
->\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00�\00\00\00\00\00\00t\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00
+>ELF Header:
+>  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 
+>  Class:                             ELF64
+>  Data:                              2's complement, little endian
+>  Version:                           1 (current)
+>  OS/ABI:                            UNIX - System V
+>  ABI Version:                       0
+>  Type:                              REL (Relocatable file)
+>  Machine:                           Advanced Micro Devices X86-64
+>  Version:                           0x1
+>  Entry point address:               0x0
+>  Start of program headers:          0 (bytes into file)
+>  Start of section headers:          536 (bytes into file)
+>  Flags:                             0x0
+>  Size of this header:               64 (bytes)
+>  Size of program headers:           0 (bytes)
+>  Number of program headers:         0
+>  Size of section headers:           64 (bytes)
+>  Number of section headers:         14
+>  Section header string table index: 13
+>
+>Section Headers:
+>  [Nr] Name              Type             Address           Offset
+>       Size              EntSize          Flags  Link  Info  Align
+>  [ 0]                   NULL             0000000000000000  00000000
+>       0000000000000000  0000000000000000           0     0     0
+>  [ 1] .text             PROGBITS         0000000000000000  00000040
+>       000000000000001c  0000000000000000  AX       0     0     1
+>  [ 2] .rela.text        RELA             0000000000000000  00000170
+>       0000000000000018  0000000000000018   I      11     1     8
+>  [ 3] .data             PROGBITS         0000000000000000  0000005c
+>       0000000000000000  0000000000000000  WA       0     0     1
+>  [ 4] .bss              NOBITS           0000000000000000  0000005c
+>       0000000000000000  0000000000000000  WA       0     0     1
+>  [ 5] .rodata           PROGBITS         0000000000000000  0000005c
+>       0000000000000004  0000000000000000   A       0     0     4
+>  [ 6] .comment          PROGBITS         0000000000000000  00000060
+>       000000000000002e  0000000000000001  MS       0     0     1
+>  [ 7] .note.GNU-stack   PROGBITS         0000000000000000  0000008e
+>       0000000000000000  0000000000000000           0     0     1
+>  [ 8] .note.gnu.pr[...] NOTE             0000000000000000  00000090
+>       0000000000000020  0000000000000000   A       0     0     8
+>  [ 9] .eh_frame         PROGBITS         0000000000000000  000000b0
+>       0000000000000038  0000000000000000   A       0     0     8
+>  [10] .rela.eh_frame    RELA             0000000000000000  00000188
+>       0000000000000018  0000000000000018   I      11     9     8
+>  [11] .symtab           SYMTAB           0000000000000000  000000e8
+>       0000000000000078  0000000000000018          12     4     8
+>  [12] .strtab           STRTAB           0000000000000000  00000160
+>       000000000000000d  0000000000000000           0     0     1
+>  [13] .shstrtab         STRTAB           0000000000000000  000001a0
+>       0000000000000074  0000000000000000           0     0     1
+>Key to Flags:
+>  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+>  L (link order), O (extra OS processing required), G (group), T (TLS),
+>  C (compressed), x (unknown), o (OS specific), E (exclude),
+>  D (mbind), l (large), p (processor specific)
+>
+>There are no section groups in this file.
+>
+>There are no program headers in this file.
+>
+>There is no dynamic section in this file.
+>
+>Relocation section '.rela.text' at offset 0x170 contains 1 entry:
+>  Offset          Info           Type           Sym. Value    Sym. Name + Addend
+>00000000000c  000300000002 R_X86_64_PC32     0000000000000000 .rodata - 4
+>
+>Relocation section '.rela.eh_frame' at offset 0x188 contains 1 entry:
+>  Offset          Info           Type           Sym. Value    Sym. Name + Addend
+>000000000020  000200000002 R_X86_64_PC32     0000000000000000 .text + 0
+>No processor specific unwind information to decode
+>
+>Symbol table '.symtab' contains 5 entries:
+>   Num:    Value          Size Type    Bind   Vis      Ndx Name
+>     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT  UND 
+>     1: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS main.c
+>     2: 0000000000000000     0 SECTION LOCAL  DEFAULT    1 .text
+>     3: 0000000000000000     0 SECTION LOCAL  DEFAULT    5 .rodata
+>     4: 0000000000000000    28 FUNC    GLOBAL DEFAULT    1 main
+>
+>No version information found in this file.
+>
+>Displaying notes found in: .note.gnu.property
+>  Owner                Data size 	Description
+>  GNU                  0x00000010	NT_GNU_PROPERTY_TYPE_0
+>      Properties: x86 feature: IBT, SHSTK
+>
 >```
 
 #### ***1.1.4. Linking step***
@@ -207,15 +295,15 @@ Static linkers such as the Unix ld program take as input a collection of relocat
 
 To build the executable, the linker must perform two main tasks:
 
-- Symbol resolution: Object files define and reference symbols. The purpose of symbol resolution is to associate each symbol reference with exactly one symbol definition.
-- Relocation: Compilers and assemblers generate code and data sections that start at address 0. The linker relocates these sections by associating a memory location with each symbol definition, and then modifying all of the references to those symbols so that they point to this memory location.
+- **Symbol resolution:** Object files define and reference symbols. The purpose of symbol resolution is to associate each symbol reference with exactly one symbol definition.
+- **Relocation:** Compilers and assemblers generate code and data sections that start at address 0. The linker relocates these sections by associating a memory location with each symbol definition, and then modifying all of the references to those symbols so that they point to this memory location.
 
 ### **2.2. Object files**
 
 Object files come in three forms:
-- Relocatable object file: Contains binary code and data in a form that can be combined with other relocatable object files at compile time to create an executable object file.
-- Executable object file: Contains binary code and data in a form that can be copied directly into memory and executed.
-- Shared object file: A special type of relocatable object file that can be loaded into memory and linked dynamically, at either load time or run time.
+- **Relocatable object file:** Contains binary code and data in a form that can be combined with other relocatable object files at compile time to create an executable object file.
+- **Executable object file:** Contains binary code and data in a form that can be copied directly into memory and executed.
+- **Shared object file:** A special type of relocatable object file that can be loaded into memory and linked dynamically, at either load time or run time.
 
 ### **2.3. Relocatable object files**
 
@@ -223,11 +311,86 @@ An object file includes 11 sections and *section header table*
 
 ![11_relocatable_object_file.png](./images/11_relocatable_object_file.png)
 
+The *section header table* describes the locations and sizes of the sections.
 
+The *ELF header* includes:
+- First 16 bytes that describes the word size and byte ordering (the order of bytes within a word) of system tha generated file.
+- ELF header size.
+- Object file type (relocatable, executable, shared).
+- The machine type.
+- The file offset of section header table.
+- The size and number of entries in the section header table. 
 
-### **2.1. Static libraries**
+*.text*: The machine code of compiled program.
 
-A static library is  a set of object files that were copied into a single file. It can be linked with other object files i  n linking process to generate executable file.
+*.rodata*: Read-only data (string, format string for *printf*, jump table for switch-case statement...).
+
+*.data*: Initialized global variables.
+
+*.bss*: Uninitialized global variables.
+
+*.symtab*: A symbol table with information about functions and global variables that are defined and referenced in the program.
+
+*.rel.text*: A list of locations in the .text section that will need to be modified when the linker combines this object file with others. In general, any instruction that calls an external function or references a global variable will need to be modified.
+
+*.rel.data*: Relocation information for any global variables that are referenced or defined by the module. In general, any initialized global variable whose initial value is the address of a global variable or externally defined function will need to be modified.
+
+*.debug*: A debugging symbol table with entries for local variables and typedefs defined in the program, global variables defined and referenced in the program, and the original C source file.
+
+*.line*: A mapping between line numbers in the original C source program and machine code instructions in the .text section.
+
+*.strtab*: A string table for the symbol tables in the .symtab and .debug sections, and for the section names in the section headers.
+
+### **2.4. Symbols and symbol table**
+
+The *symbol table* contains an array of entries.
+
+Format of each entry:
+
+```C
+typedef struct
+{
+    int name;
+    int value;
+    int size;
+    char type :4,
+        binding :4;
+    char reserve;
+    char section;
+}
+```
+
+*name*: A byte of offset into the name of symbol in the string table (*strtab*).
+
+*value*: The symbol's address or the offset from the beginning of the section where object is defined if object file is relocatable object file.
+
+*size*: The size (in byte) of object.
+
+*type*: The 4 bits that describe the symbol is data, function, section or the path name of source file.
+
+*binding*: The 4 bits that describe the symbol is local, global or weak, ...
+
+*reserve*: Done use.
+
+*section*: Describe a section that symbol associate with, can be a section index, ABS if the symbol should not be relocated, UNDEF if the symbol are referenced in this object module but defined in another module, or COMMON if the symbol is an uninitialized data.
+
+### **2.5. Symbol resolution**
+
+#### ***2.5.1. Local symbol***
+
+The compiler ensure that only one definition for each symbol per module and each static local variable has a unique name. Thus, the linker can associate each reference with exactly one symbol definition in symbol table.
+
+#### ***2.5.2. Global symbol***
+
+At compile time, the compiler export each global symbol to assembler as either strong or weak, and the assembler encode this information implicitly in the symbol table of relocation object files.  Unix linkers use the following rules for dealing with multiply defined symbols:
+
+- **Rule 1**: Multiple strong symbols are not allowed.
+- **Rule 2**: Given a strong symbol and multiple weak symbols, choose the strong symbol.
+- **Rule 3**: Given multiple weak symbols, choose any of the weak symbols
+
+### **2.6. Static libraries**
+
+A static library is  a set of object files that were copied into a single file. It can be linked with other object files in linking process to generate executable file, only the object modules in static library that have referenced by another object files will be linked.
 
 The static library files must be named with prefix 'lib' and suffix '.a'.
 
@@ -248,7 +411,7 @@ gcc src_file_name.c -L. -llib_name -o exe_file_name
 >- The 'L' flag specifies the path to libraries.
 >- The 'l' flag specifies the libraries's name without prefix 'lib' and subfix '.a'.
 
-### **2.2. Dynamic libraries**
+### **2.7. Dynamic libraries**
 
 A dynamic library is a collection of object files grouped into 1 file. It is not loaded into executable file, it is loaded into memory in running time and can be used by several running programs.
 
@@ -334,7 +497,7 @@ make target_name
 >```
 
 ### **3.2. Variables**
-#### **3.2.1. Definition**
+#### ***3.2.1. Definition***
 A variable is a name defined in a makefile to represent a string of text, called the variable's value.
 
 To define a value for variables, use `:=` or `=`.
@@ -366,7 +529,7 @@ To refer to a variable, use `$(var_name)` or `${var_name}`.
 >one two
 >```
 
-#### **3.2.2. Flavors of variables**
+#### ***3.2.2. Flavors of variables***
 Flavors of variables is the ways that variables get value.
 
 There are 2 flavors of variables:
@@ -391,7 +554,7 @@ There are 2 flavors of variables:
 >one
 >```
 
-#### **3.2.3. Some useful automatic variables**
+#### ***3.2.3. Some useful automatic variables***
 
 `$@`: The target name of the rule.
 
