@@ -55,7 +55,7 @@ In the OSI reference model, the communications between a computing system are sp
 
 - Data Link layer is handled by the NIC (Network Interface Card) and device drivers of host machines. 
 - The set of bits in data link layer is called Frame.
-- Data link layer devices: switch, bridge, NIC(Network Interface Card).
+- Data link layer devices: switch, bridge, NIC (Network Interface Card).
 
 **Network Layer**:
 - Network layer protocol provides logical communication between hosts 
