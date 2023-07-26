@@ -318,14 +318,14 @@ It has no handshaking dialogues and thus exposes the user's program to any unrel
 
 ![socket_closing_stat_machine](images/socket_closing_state_machine.png)
 
-- If the server is the active close, it will stuck in TIME_WAIT state and its port number can not be used for another socket in 2MSL (maximum segment lifetime).
+- If the server is the active close, it will stuck in TIME_WAIT state and its port number can not be used for another socket in 2MSL (maximum segment lifetime) (60s).
 
 - To know how long is 2MSL, use below command:
     ```
     cat /proc/sys/net/ipv4/tcp_fin_timeout
     ```
 
-
+- To solve this error, use SO_REUSEADDR option by calling setsockopt() function before calling bind().
 
 ## . Process and thread
 
