@@ -173,7 +173,7 @@ It requires 3-way handshake to set up connection.
 
 The TCP socket guarantees that all data is received and acknowledged.
 
-![stream_socket_system_call](images/stream_socket_system_call.png)
+![01_stream_socket_system_call](images/01_stream_socket_system_call.png)
 
 - **bind() system call:**
 
@@ -223,7 +223,7 @@ UDP socket is a connectionless socket that uses the User Datagram Protocol (UDP)
 
 It has no handshaking dialogues and thus exposes the user's program to any unreliability of the underlying network; there is no guarantee of delivery, ordering, or duplicate protection.
 
-![datagram_socket_system_call](images/datagram_socket_system_call.png)
+![02_datagram_socket_system_call](images/02_datagram_socket_system_call.png)
 
 - **recvfrom() system call:**
 
@@ -316,7 +316,7 @@ It has no handshaking dialogues and thus exposes the user's program to any unrel
 
 ### **1.7. "Address already in use" error**
 
-![socket_closing_stat_machine](images/socket_closing_state_machine.png)
+![03_socket_closing_state_machine](images/03_socket_closing_state_machine.png)
 
 - If the server is the active close, it will stuck in TIME_WAIT state and its port number can not be used for another socket in 2MSL (maximum segment lifetime) (60s).
 
