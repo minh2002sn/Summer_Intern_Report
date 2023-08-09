@@ -327,5 +327,23 @@ It has no handshaking dialogues and thus exposes the user's program to any unrel
 
 - To solve this error, use SO_REUSEADDR option by calling setsockopt() function before calling bind().
 
-## . Process and thread
+## **2. Process and thread**
+
+## **3. Interprocess Communication (IPC)**
+
+Therefore, Linux, like all modern UNIX implementations, provides a rich set of mechanisms for *interprocess communication* (IPC), including the following:
+
+- **Signals**: which are used to indicate that an event has occurred;
+pipes (familiar to shell users as the | operator) and FIFOs, which can be used to transfer data between processes.
+
+- **Sockets**: which can be used to transfer data from one process to another, either on the same host computer or on different hosts connected by a network.
+
+- **File locking**: which allows a process to lock regions of a file in order to prevent other processes from reading or updating the file contents.
+
+- **Message queues**: which are used to exchange messages (packets of data) between processes;
+
+- **Semaphores**: which are used to synchronize the actions of processes; and shared memory, which allows two or more processes to share a piece of memory. When one process changes the contents of the shared memory, all of the other processes can immediately see the changes.
+
+### **3.1. Signal**
+
 

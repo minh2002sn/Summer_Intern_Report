@@ -141,7 +141,8 @@ on different hosts.
     - Reliable data transfer by using flow control, sequence numbers, acknowledgements, timers.
     - Congestion control.
 
-### **2.4. TCP header format**
+### **2.4. Transmission Control Protocol (TCP)**
+#### **2.4.1. TCP header format**
 - TCP header includes 28 bytes:
 
 ![04_tcp_head_format](images/04_tcp_header_format.png)
@@ -202,4 +203,16 @@ on different hosts.
                 - This field must only be sent in the initial connection request (i.e., in segments with the SYN control bit set). If this option is not used, any segment size is allowed.
 - **Padding:**
     - The TCP header padding is used to ensure that the TCP header ends and data begins on a 32 bit boundary. The padding is composed of zeros.
-        
+
+### **2.5. User Datagram Protocol (UDP)**
+User Datagram Protocol (UDP) is a Transport Layer protocol. UDP is a part of the Internet Protocol suite, referred to as UDP/IP suite. Unlike TCP, it is an unreliable and connectionless protocol. So, there is no need to establish a connection prior to data transfer. The UDP helps to establish low-latency and loss-tolerating connections establish over the network.The UDP enables process to process communication.
+#### **2.5.1. UDP header format**
+
+![05_udp_head_format](./images/05_udp_header_format.png)
+
+- **Source port (16 bits):** The source port number.
+- **Destination port (16 bits):** The destination port number.
+- **Length (16 bits):** The length of segment including the UDP header and the data.
+- **Checksum (16 bits):**
+    - Checksum the 1s complement of the sum of all the 16-bit words in the TCP segment and 12 bytes pseudo header, which are carried in the Internet Protocol.
+    - At the receiver, all TCP segment and 12 bytes pseudo IP header are added, including checksum. If no errors are introduced into the packet, result will be 1111 1111 1111 1111.
